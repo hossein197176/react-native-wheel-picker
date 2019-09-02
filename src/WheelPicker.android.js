@@ -1,8 +1,3 @@
-/**
- * @prettier
- * @flow
- * */
-
 import React from "react"
 import { requireNativeComponent,PixelRatio } from "react-native"
 
