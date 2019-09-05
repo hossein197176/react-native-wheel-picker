@@ -1,37 +1,14 @@
-import React from "react"
-import { requireNativeComponent,PixelRatio } from "react-native"
+import React from 'react';
+import { requireNativeComponent, PixelRatio } from 'react-native';
 
-// eslint-disable-next-line no-use-before-define
 const WheelPickerView = requireNativeComponent( "WheelPicker", WheelPicker );
 
-type Props = {
-    onItemSelected: any => void,
-    data: Array<any>,
-    isCurved?: boolean,
-    isCyclic?: boolean,
-    isAtmospheric?: boolean,
-    selectedItemTextColor?: string,
-    itemSpace?: number,
-    visibleItemCount?: number,
-    renderIndicator?: boolean,
-    indicatorColor?: string,
-    indicatorSize?: number,
-    isCurtain?: boolean,
-    curtainColor?: string,
-    itemTextColor?: string,
-    itemTextSize?: number,
-    itemTextFontFamily?: string,
-    itemTextAlign?: 'left' | 'center' | 'right',
-    selectedItemPosition?: number,
-    backgroundColor?: string,
-    allowFontScaling?: boolean
-}
-
-type State = { selectedItemPosition: number }
-
-class WheelPicker extends React.Component<Props, State> {
+export default class WheelPicker extends React.Component{
     state = {
-        selectedItemPosition: 0
+        selectedItemPosition: this.props.selectedItemPosition || 0,
+        data: this.props.PersianNumber ?
+            this.props.data.map((value) => value.toPersianDigits()) :
+            this.props.data
     }
 
     static defaultProps = {
@@ -41,18 +18,16 @@ class WheelPicker extends React.Component<Props, State> {
         }
     }
 
-    onItemSelected = ( event: any ) => {
+    onItemSelected = ( event ) => {
         if ( this.props.onItemSelected ) {
             this.props.onItemSelected( event.nativeEvent )
         }
     }
 
-    componentDidMount() {
-        this.setState( { selectedItemPosition: this.props.selectedItemPosition } )
-    }
-
-    componentWillReceiveProps( nextProps: Props ) {
-        this.setState( { selectedItemPosition: nextProps.selectedItemPosition } )
+    componentDidUpdate(prevProps, prevState){
+        if (prevState.selectedItemPosition !== this.props.selectedItemPosition){
+            this.setState( { selectedItemPosition: nextProps.selectedItemPosition } )
+        }
     }
 
     getItemTextSize = ()=>{
@@ -66,16 +41,15 @@ class WheelPicker extends React.Component<Props, State> {
     render() {
         const properties = {
             ...this.props,
-            itemTextSize:this.getItemTextSize()
+            itemTextSize: this.getItemTextSize()
         }
         return (
             <WheelPickerView
                 { ...properties }
+                data = {this.state.data}
                 onChange={ this.onItemSelected }
                 selectedItemPosition={ this.state.selectedItemPosition }
             />
         )
     }
 }
-
-export default WheelPicker;
