@@ -15,7 +15,7 @@ export default class WheelPicker extends React.Component {
 
 	onItemSelected = (value, index) => {
 		if (this.props.onItemSelected) {
-			this.props.onItemSelected(index)
+			this.props.onItemSelected({position: index)
 		}
 		this.setState({selectedItemPosition: index})
 	}
@@ -49,7 +49,7 @@ export default class WheelPicker extends React.Component {
 				{...this.props}>
 					{
 						this.props.PersianNumber ?
-						this.props.data.map((i, index) => <Picker.Item key={index} label={i.toPersianDigits()} value={i} />) :
+						this.props.data.map((i, index) => <Picker.Item key={index} label={i} value={i} />) :
 						this.props.data.map((i, index) => <Picker.Item key={index} label={i} value={i} />)
 					}
 			</Picker>
